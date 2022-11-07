@@ -11,8 +11,10 @@ This project implements an apiREST is part of a technical test.
 - Integrates nicely with [`serverless-offline`](https://github.com/dherault/serverless-offline)
 
 ## Usage
-- serverless offline start (local)
-- serverless deploy (production)
+local:
+- serverless offline start
+production:
+- serverless deploy
 
 ## Documentation
 https://documenter.getpostman.com/view/5768800/2s8YYMo1UB
