@@ -2,6 +2,7 @@ import { Client } from "../../schema/Client";
 import { ClientRepositoryInterface } from "./ClientRepositoryInterface";
 import AWS from "aws-sdk";
 import { v4 } from "uuid";
+import { ItemList } from "aws-sdk/clients/dynamodb";
 
 export class ClientRepository implements ClientRepositoryInterface {
   private docClient = new AWS.DynamoDB.DocumentClient();
@@ -25,5 +26,15 @@ export class ClientRepository implements ClientRepositoryInterface {
     }
 
     return false;
+  }
+
+  async getAllClients(): Promise<any> {
+    const result = await this.docClient
+      .scan({
+        TableName: this.tableName,
+      })
+      .promise();
+
+    return await result.Items;
   }
 }
