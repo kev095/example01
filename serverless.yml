@@ -19,19 +19,19 @@ provider:
             - { "Fn::GetAtt": ["ClientTable", "Arn"] }
 functions:
   getPlanet:
-    handler: src/handlers.getPlanet
+    handler: src/handlers/getPlanet.getPlanet
     events:
       - httpApi:
           path: /planet/{id}
           method: get
   createClient:
-    handler: src/handlers.createClient
+    handler: src/handlers/client.createClient
     events:
       - httpApi:
           path: /client
           method: post
   allClients:
-    handler: src/handlers.allClients
+    handler: src/handlers/client.allClients
     events:
       - httpApi:
           path: /client
