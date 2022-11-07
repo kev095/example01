@@ -4,12 +4,12 @@ import { Client } from "../../schema/Client";
 import { ClientServiceInterface } from "./ClientServiceInterface";
 
 export class ClientService implements ClientServiceInterface {
+  private repository: ClientRepositoryInterface = new ClientRepository();
   async saveClient(client: Client): Promise<boolean> {
-    const repository: ClientRepositoryInterface = new ClientRepository();
-    return await repository.save(client);
+    return await this.repository.save(client);
   }
 
-  getClient(id: string): Promise<Client> {
-    throw console.error();
+  async getAllClients(): Promise<any> {
+    return await this.repository.getAllClients();
   }
 }
