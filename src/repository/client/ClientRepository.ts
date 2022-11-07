@@ -14,14 +14,14 @@ export class ClientRepository implements ClientRepositoryInterface {
       clientID: v4(),
     };
 
-    const saveClient = await this.docClient
+    const savedItem = await this.docClient
       .put({
         TableName: this.tableName,
         Item: storableClient,
       })
       .promise();
 
-    if (saveClient) {
+    if (savedItem) {
       return true;
     }
 
