@@ -10,7 +10,7 @@ export class ClientRepository implements ClientRepositoryInterface {
   async save(client: Client): Promise<boolean> {
     const storableClient = {
       ...client,
-      productID: v4(),
+      clientID: v4(),
     };
 
     const saveClient = await this.docClient
