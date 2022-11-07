@@ -1,17 +1,12 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import axios from "axios";
+import { PLanetService } from "./service/planet/PlanetService";
+import { PlanetServiceInterface } from "./service/planet/PlanetServiceInterface";
 
 export const getPlanet = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
-    const id = event.pathParameters?.id;
-    const { data } = await axios.get("https://swapi.py4e.com/api/planets/" + id);
-    const planeta = {
-      nombre: data.name,
-      periodo_rotacion: data.rotation_period,
-      periodo_orbital: data.orbital_period,
-      diametro: data.diameter,
-      gravedad: data.gravity,
-    };
+    const service: PlanetServiceInterface = new PLanetService();
+    const id = event.pathParameters?.id as string;
+    const planeta = await service.getPlanet(id);
     return {
       statusCode: 200,
       body: JSON.stringify(planeta),
