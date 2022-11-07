@@ -76,6 +76,12 @@ functions:
       - httpApi:
           path: /planet/{id}
           method: get
+  createClient:
+    handler: src/handlers.createClient
+    events:
+      - httpApi:
+          path: /client/
+          method: post
     
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
