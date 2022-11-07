@@ -51,3 +51,10 @@ export const createClient = async (event: APIGatewayProxyEvent): Promise<APIGate
     };
   }
 };
+
+export const allClients = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify("unable to save card into database, please check the connection"),
+  };
+};
