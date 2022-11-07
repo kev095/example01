@@ -20,3 +20,19 @@ export const getPlanet = async (event: APIGatewayProxyEvent): Promise<APIGateway
     };
   }
 };
+
+export const createClient = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  try {
+    return {
+      statusCode: 200,
+      body: JSON.stringify("ok"),
+    };
+  } catch (error) {
+    return {
+      statusCode: 404,
+      body: JSON.stringify({
+        error: error,
+      }),
+    };
+  }
+};
