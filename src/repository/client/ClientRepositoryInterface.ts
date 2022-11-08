@@ -1,6 +1,9 @@
-import { Client } from "../../schema/Client";
+import { ClientList } from '../../common/types/ClientList';
+import { Client } from '../../schema/Client';
+import { RepositoryInterface } from '../RepositoryInterface';
 
-export interface ClientRepositoryInterface {
+export interface ClientRepositoryInterface extends RepositoryInterface {
   save(client: Client): Promise<boolean>;
-  getAllClients(): Promise<any>;
+
+  getAllClients(): Promise<ClientList>;
 }

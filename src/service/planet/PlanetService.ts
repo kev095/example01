@@ -1,17 +1,25 @@
-import axios from "axios";
-import { Planet } from "../../schema/Planet";
-import { PlanetServiceInterface } from "./PlanetServiceInterface";
+import axios from 'axios';
+import { Planet } from '../../schema/Planet';
+import { PlanetServiceInterface } from './PlanetServiceInterface';
 
-export class PLanetService implements PlanetServiceInterface {
-  async getPlanet(id: string): Promise<Planet> {
-    const { data } = await axios.get("https://swapi.py4e.com/api/planets/" + id);
-    const result: Planet = {
-      nombre: data.name,
-      periodo_rotacion: data.rotation_period,
-      periodo_orbital: data.orbital_period,
-      diametro: data.diameter,
-      gravedad: data.gravity,
+export class PlanetService implements PlanetServiceInterface {
+  async getPlanetById(id: number): Promise<Planet> {
+    const { data } = await axios.get(`https://swapi.py4e.com/api/planets/${id}/`);
+
+    if (data.detail) {
+      throw new Error(
+        `Unable to find planet with id: ${id}, with details from api: ${data.detail}`,
+      );
+    }
+
+    const planet: Planet = {
+      name: data.name,
+      rotation_period: data.rotation_period,
+      orbital_period: data.orbital_period,
+      diameter: data.diameter,
+      gravity: data.gravity,
     };
-    return await result;
+
+    return planet;
   }
 }

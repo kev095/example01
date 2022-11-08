@@ -1,41 +1,46 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { Client } from "../schema/Client";
-import { ClientService } from "../service/client/ClientService";
-import { ClientServiceInterface } from "../service/client/ClientServiceInterface";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { fromError } from '../common/helper/ResponseErrorHelper';
+import { Client } from '../schema/Client';
+import { ClientService } from '../service/client/ClientService';
+import { ClientServiceInterface } from '../service/client/ClientServiceInterface';
+
+const service: ClientServiceInterface = new ClientService();
 
 export const createClient = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  let response: APIGatewayProxyResult = {
+    statusCode: 200,
+    body: JSON.stringify({}),
+  };
+
   try {
     const requestBody = JSON.parse(event.body as string);
-    const client: Client = { ...requestBody };
-    const service: ClientServiceInterface = new ClientService();
 
+    const client: Client = { ...requestBody };
     const clientSaved = await service.saveClient(client);
+
     if (clientSaved) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify(client),
-      };
+      response.body = JSON.stringify(client);
     }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify("unable to save card into database, please check the connection"),
-    };
-  } catch (error) {
-    return {
-      statusCode: 404,
-      body: JSON.stringify({
-        error: error,
-      }),
-    };
+    throw new Error('Unable to save card into database');
+  } catch (error: unknown) {
+    response = fromError(error);
   }
+
+  return response;
 };
 
 export const allClients = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const service: ClientServiceInterface = new ClientService();
-  const listClients = await service.getAllClients();
-  return {
+  const response: APIGatewayProxyResult = {
     statusCode: 200,
-    body: JSON.stringify(listClients),
+    body: JSON.stringify([]),
   };
+
+  const clientsList = await service.getAllClients();
+
+  if (clientsList) {
+    response.body = JSON.stringify(clientsList);
+  }
+
+  return response;
 };

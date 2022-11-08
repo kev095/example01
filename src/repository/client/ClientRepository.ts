@@ -1,12 +1,19 @@
-import { Client } from "../../schema/Client";
-import { ClientRepositoryInterface } from "./ClientRepositoryInterface";
-import AWS from "aws-sdk";
-import { v4 } from "uuid";
-import { ItemList } from "aws-sdk/clients/dynamodb";
+import { Client } from '../../schema/Client';
+import { ClientRepositoryInterface } from './ClientRepositoryInterface';
+import AWS from 'aws-sdk';
+import { v4 } from 'uuid';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import { ClientList } from '../../common/types/ClientList';
 
 export class ClientRepository implements ClientRepositoryInterface {
   private docClient = new AWS.DynamoDB.DocumentClient();
-  private tableName = "ClientTable";
+  private readonly tableName = 'ClientTable';
+
+  constructor(docClient?: DocumentClient) {
+    if (docClient) {
+      this.docClient = docClient;
+    }
+  }
 
   async save(client: Client): Promise<boolean> {
     const storableClient = {
@@ -28,7 +35,7 @@ export class ClientRepository implements ClientRepositoryInterface {
     return false;
   }
 
-  async getAllClients(): Promise<any> {
+  async getAllClients(): Promise<ClientList> {
     const result = await this.docClient
       .scan({
         TableName: this.tableName,

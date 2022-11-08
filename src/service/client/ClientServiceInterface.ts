@@ -1,7 +1,9 @@
-import { ItemList } from "aws-sdk/clients/dynamodb";
-import { Client } from "../../schema/Client";
+import { ClientList } from '../../common/types/ClientList';
+import { Client } from '../../schema/Client';
+import { ServiceInterface } from '../ServiceInterface';
 
-export interface ClientServiceInterface {
+export interface ClientServiceInterface extends ServiceInterface {
   saveClient(client: Client): Promise<boolean>;
-  getAllClients(): Promise<any>;
+
+  getAllClients(): Promise<ClientList>;
 }
