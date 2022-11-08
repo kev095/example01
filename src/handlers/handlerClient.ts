@@ -16,13 +16,12 @@ export const createClient = async (event: APIGatewayProxyEvent): Promise<APIGate
     const requestBody = JSON.parse(event.body as string);
 
     const client: Client = { ...requestBody };
-    const clientSaved = await service.saveClient(client);
 
+    const clientSaved = await service.saveClient(client);
+    console.log(clientSaved);
     if (clientSaved) {
       response.body = JSON.stringify(client);
     }
-
-    throw new Error('Unable to save card into database');
   } catch (error: unknown) {
     response = fromError(error);
   }
